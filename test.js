@@ -1,10 +1,11 @@
-import fs from 'node:fs';
-import isPng from 'is-png';
-import test from 'ava';
-import optipng from './index.js';
+const fs = require('fs');
+const path = require('path');
+const isPng = require('is-png');
+const test = require('ava');
+const optipng = require('.');
 
-const fixture = fs.readFileSync(new URL('fixture.png', import.meta.url));
-const fixtureBroken = fs.readFileSync(new URL('fixture_broken.png', import.meta.url));
+const fixture = fs.readFileSync(path.join(__dirname, 'fixture.png'));
+const fixtureBroken = fs.readFileSync(path.join(__dirname, 'fixture_broken.png'));
 
 test('optimize a PNG', async t => {
 	const data = await optipng()(fixture);

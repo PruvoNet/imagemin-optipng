@@ -1,9 +1,9 @@
-import {Buffer} from 'node:buffer';
-import execBuffer from 'exec-buffer';
-import isPng from 'is-png';
-import optipng from 'optipng-bin';
+const {Buffer} = require('node:buffer');
+const execBuffer = require('exec-buffer');
+const isPng = require('is-png');
+const optipng = require('optipng-bin');
 
-const main = options => async buffer => {
+module.exports = options => async buffer => {
 	options = {
 		optimizationLevel: 3,
 		bitDepthReduction: true,
@@ -60,5 +60,3 @@ const main = options => async buffer => {
 		args: arguments_,
 	});
 };
-
-export default main;
