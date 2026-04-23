@@ -6,7 +6,7 @@
 	"repository": "imagemin/imagemin-optipng",
 	"type": "module",
 	"engines": {
-		"node": "^12.20.0 || ^14.13.1 || >=16.0.0 || >= 18.0.0 || >= 20.0.0 || >= 22.0.0"
+		"node": "^20 || ^22 || >=24"
 	},
 	"scripts": {
 		"test": "xo && ava"
@@ -26,7 +26,7 @@
 	"dependencies": {
 		"exec-buffer": "^3.0.0",
 		"is-png": "^3.0.1",
-		"optipng-bin": "https://github.com/PruvoNet/optipng-bin"
+		"optipng-bin": "https://github.com/PruvoNet/optipng-bin#e25176abc1e6f3ffbd5f61870748bf208d305ad1"
 	},
 	"devDependencies": {
 		"ava": "^4.0.1",
