@@ -9,7 +9,7 @@
 		"node": ">=20"
 	},
 	"scripts": {
-		"test": "xo && ava"
+		"test": "ava"
 	},
 	"files": [
 		"index.js"
@@ -29,7 +29,6 @@
 		"optipng-bin": "github:PruvoNet/optipng-bin#v9.2.0"
 	},
 	"devDependencies": {
-		"ava": "^6.0.0",
-		"xo": "^0.59.0"
+		"ava": "^6.0.0"
 	}
 }
