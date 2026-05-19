@@ -11,27 +11,83 @@ permissions:
 
 jobs:
   test:
-    name: Node.js ${{ matrix.node-version }} on ${{ matrix.os }}
-    runs-on: ${{ matrix.os }}
+    name: ${{ matrix.variant }} / Node ${{ matrix.node-version }}
+    runs-on: ${{ matrix.runner }}
     strategy:
       fail-fast: false
       matrix:
         node-version: ['24.15.0', '26.1.0']
-        os: [ubuntu-latest, macos-14, windows-latest]
+        include:
+          - variant: darwin-x64
+            runner: macos-14
+            node-arch: x64
+          - variant: darwin-arm64
+            runner: macos-14
+          - variant: linux-x64
+            runner: ubuntu-latest
+          - variant: linux-x64-musl
+            runner: ubuntu-latest
+            musl: true
+          - variant: linux-arm64
+            runner: ubuntu-24.04-arm
+          - variant: linux-arm64-musl
+            runner: ubuntu-24.04-arm
+            musl: true
+          - variant: win32-x64
+            runner: windows-latest
+          - variant: win32-arm64
+            runner: windows-11-arm
+
     steps:
       - uses: actions/checkout@v5
 
-      # optipng-bin's install script tries its GH Release tarball first;
-      # toolchain deps below are only needed if it falls back to source.
-      - if: contains(matrix.os, 'ubuntu')
-        run: sudo apt-get update -qq && sudo apt-get install -qq -y build-essential zlib1g-dev
+      - if: startsWith(matrix.runner, 'ubuntu') && !matrix.musl
+        run: sudo apt-get update -qq && sudo apt-get install -qq -y build-essential zlib1g-dev file
 
       - uses: actions/setup-node@v5
+        if: ${{ !matrix.musl }}
         with:
           node-version: ${{ matrix.node-version }}
+          architecture: ${{ matrix.node-arch }}
 
-      - run: npm install
-      - run: npm test
+      - if: ${{ !matrix.musl }}
+        run: npm install
+
+      - name: Show resolved optipng binary
+        if: ${{ !matrix.musl }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          bin=$(node --input-type=module -e "import('optipng-bin').then(m => process.stdout.write(m.default))")
+          echo "Resolved optipng binary: $bin"
+          if command -v file >/dev/null 2>&1; then
+            file "$bin"
+          fi
+          "$bin" --version
+
+      - if: ${{ !matrix.musl }}
+        run: npm test
+
+      - name: Install + verify + test (Alpine docker)
+        if: matrix.musl
+        env:
+          NODE_VERSION: ${{ matrix.node-version }}
+        run: |
+          set -euo pipefail
+          major="${NODE_VERSION%%.*}"
+          docker run --rm \
+            -v "$PWD":/work -w /work \
+            -e CI=true \
+            "node:${major}-alpine" sh -c '
+              set -e
+              apk add --no-cache build-base zlib-dev tar file
+              npm install
+              bin=$(node --input-type=module -e "import(\"optipng-bin\").then(m => process.stdout.write(m.default))")
+              echo "Resolved optipng binary: $bin"
+              file "$bin"
+              "$bin" --version
+              npm test
+            '
 
   release:
     name: auto-release on version bump
