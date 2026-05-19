@@ -1,12 +1,12 @@
 {
 	"name": "imagemin-optipng",
-	"version": "8.1.0",
+	"version": "8.2.0",
+	"repository": "PruvoNet/imagemin-optipng",
 	"description": "Imagemin plugin for OptiPNG",
 	"license": "MIT",
-	"repository": "imagemin/imagemin-optipng",
 	"type": "module",
 	"engines": {
-		"node": "^20 || ^22 || >=24"
+		"node": ">=20"
 	},
 	"scripts": {
 		"test": "xo && ava"
@@ -26,10 +26,10 @@
 	"dependencies": {
 		"exec-buffer": "^3.0.0",
 		"is-png": "^3.0.1",
-		"optipng-bin": "https://github.com/PruvoNet/optipng-bin#e25176abc1e6f3ffbd5f61870748bf208d305ad1"
+		"optipng-bin": "github:PruvoNet/optipng-bin#v9.2.0"
 	},
 	"devDependencies": {
-		"ava": "^4.0.1",
-		"xo": "^0.47.0"
+		"ava": "^6.0.0",
+		"xo": "^0.59.0"
 	}
 }
