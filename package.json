@@ -26,7 +26,7 @@
 	"dependencies": {
 		"exec-buffer": "^3.0.0",
 		"is-png": "^3.0.1",
-		"optipng-bin": "github:PruvoNet/optipng-bin#v9.2.0"
+		"optipng-bin": "github:PruvoNet/optipng-bin#v9.2.1"
 	},
 	"devDependencies": {
 		"ava": "^6.0.0"
