@@ -5,6 +5,13 @@
 	"description": "Imagemin plugin for OptiPNG",
 	"license": "MIT",
 	"type": "module",
+	"exports": {
+		".": {
+			"types": "./index.d.ts",
+			"default": "./index.js"
+		}
+	},
+	"types": "./index.d.ts",
 	"engines": {
 		"node": ">=20"
 	},
@@ -12,7 +19,8 @@
 		"test": "ava"
 	},
 	"files": [
-		"index.js"
+		"index.js",
+		"index.d.ts"
 	],
 	"keywords": [
 		"imageminplugin",
